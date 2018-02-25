@@ -1,4 +1,4 @@
 triples
 =======
 
-Port of Peter Hewitt triples game
+Port to gtk3 of Triples activity

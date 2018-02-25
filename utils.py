@@ -10,7 +10,6 @@
 """
 import os
 import sys
-import copy
 import random
 import logging
 import pygame
@@ -33,13 +32,13 @@ def exit():
 
 
 def save():
-    dir = ''
-    dir = os.environ.get('SUGAR_ACTIVITY_ROOT')
-    if dir is None:
-        dir = ''
-    fname = os.path.join(dir, 'data', 'triples.dat')
+    directory = ''
+    directory = os.environ.get('SUGAR_ACTIVITY_ROOT')
+    if directory is None:
+        directory = ''
+    fname = os.path.join(directory, 'data', 'triples.dat')
     try:
-        f = open(fname,  'w')
+        f = open(fname, 'w')
     except Exception as e:
         logging.error('Could not open %s: %s' % (fname, e))
         return
@@ -48,14 +47,14 @@ def save():
 
 
 def load():
-    dir = ''
-    dir = os.environ.get('SUGAR_ACTIVITY_ROOT')
-    if dir is None:
-        dir = ''
-    fname = os.path.join(dir, 'data', 'triples.dat')
+    directory = ''
+    directory = os.environ.get('SUGAR_ACTIVITY_ROOT')
+    if directory is None:
+        directory = ''
+    fname = os.path.join(directory, 'data', 'triples.dat')
     if os.path.exists(fname):
         try:
-            f = open(fname,  'r')
+            f = open(fname, 'r')
         except Exception as e:
             logging.error('Could not open %s: %s' % (fname, e))
             return None
@@ -73,15 +72,15 @@ def version_display():
     message(g.screen, g.font1, g.message)
 
 
-# loads an image (eg pic.png) from the data subdirectory
+# loads an image (eg pic.png) from the data subdirectoryectory
 # converts it for optimum display
 # resizes it using the image scaling factor,  g.imgf
 #   so it is the right size for the current screen resolution
 #   all images are designed for 1200x900
-def load_image(file1, alpha=False, subdir=''):  # eg subdir = 'glow'
+def load_image(file1, alpha=False, subdirectory=''):  # eg subdirectory = 'glow'
     data = 'data'
-    if subdir != '':
-        data = os.path.join('data', subdir)
+    if subdirectory != '':
+        data = os.path.join('data', subdirectory)
     fname = os.path.join(data, file1)
     try:
         img = pygame.image.load(fname)
