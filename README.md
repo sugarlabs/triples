@@ -1,4 +1,4 @@
 triples
 =======
 
-Port to gtk3 of Triples activity
+Written by Peter Hewitt.
