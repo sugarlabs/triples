@@ -14,6 +14,9 @@
 from gettext import gettext as _
 import logging
 
+import gi
+gi.require_version('Gtk', '3.0')
+gi.require_version('Gdk', '3.0')
 from gi.repository import Gtk
 from gi.repository import Gdk
 import pygame
@@ -48,21 +51,21 @@ class PeterActivity(activity.Activity):
         self.max_participants = 1
 
         # Build the activity toolbar.
-        toolbox = ToolbarBox()
+        toolbar_box = ToolbarBox()
 
         activity_button = ActivityToolbarButton(self)
-        toolbox.toolbar.insert(activity_button, 0)
+        toolbar_box.toolbar.insert(activity_button, 0)
         activity_button.show()
 
         cyan = ToolButton('cyan')
-        toolbox.toolbar.insert(cyan, -1)
+        toolbar_box.toolbar.insert(cyan, -1)
         cyan.set_tooltip(_('Restart'))
         cyan.connect('clicked', self._button_cb, 'new')
         cyan.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = True
-        toolbox.toolbar.insert(separator, -1)
+        toolbar_box.toolbar.insert(separator, -1)
         separator.show()
 
         label = Gtk.Label()
@@ -70,21 +73,21 @@ class PeterActivity(activity.Activity):
         label.show()
         labelitem = Gtk.ToolItem()
         labelitem.add(label)
-        toolbox.toolbar.insert(labelitem, -1)
+        toolbar_box.toolbar.insert(labelitem, -1)
         labelitem.show()
 
         separator = Gtk.SeparatorToolItem()
         separator.props.draw = False
         separator.set_expand(True)
-        toolbox.toolbar.insert(separator, -1)
+        toolbar_box.toolbar.insert(separator, -1)
         separator.show()
 
         stop = StopButton(self)
-        toolbox.toolbar.insert(stop, -1)
+        toolbar_box.toolbar.insert(stop, -1)
         stop.show()
 
-        toolbox.show()
-        self.set_toolbar_box(toolbox)
+        toolbar_box.show()
+        self.set_toolbar_box(toolbar_box)
 
         # Create the game instance.
         self.game = Triples.Triples(colors, sugar=True)
