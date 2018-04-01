@@ -93,18 +93,16 @@ class PeterActivity(activity.Activity):
         self.game = Triples.Triples(colors, sugar=True)
 
         # Build the Pygame canvas.
-        self._pygamecanvas = sugargame.canvas.PygameCanvas(self)
+        self.game.canvas = self._pygamecanvas = sugargame.canvas.PygameCanvas(
+            self, main=self.game.run, modules=[pygame.display, pygame.font])
+
         # Note that set_canvas implicitly calls
         # read_file when resuming from the Journal.
         self.set_canvas(self._pygamecanvas)
-        self.game.canvas = self._pygamecanvas
         self.game.set_label(label)
 
         Gdk.Screen.get_default().connect('size-changed',
-                                             self.__configure_cb)
-
-        # Start the game running.
-        self._pygamecanvas.run_pygame(self.game.run)
+                                         self.__configure_cb)
 
     def get_preview(self):
         return self._pygamecanvas.get_preview()

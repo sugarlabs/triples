@@ -87,6 +87,13 @@ class Triples:
 
     def run(self, restore=False):
         g.init()
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                return
+            elif event.type == pygame.VIDEORESIZE:
+                pygame.display.set_mode(event.size, pygame.RESIZABLE)
+                break
+
         if not self.journal:
             utils.load()
         self.trip = trip.Trip(self.sugar, self.label, self.colors[0])
@@ -164,6 +171,7 @@ class Triples:
                     g.redraw = True
                     self.trip.complete()
             g.clock.tick(40)
+
 
 if __name__ == "__main__":
     pygame.init()

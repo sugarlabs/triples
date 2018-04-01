@@ -17,7 +17,7 @@ import pygame
 import g
 import load_save
 
-#constants
+# constants
 RED, BLUE, GREEN = (255, 0, 0), (0, 0, 255), (0, 255, 0)
 BLACK, WHITE = (0, 0, 0), (255, 255, 255)
 CYAN, ORANGE, CREAM = (0, 255, 255), (255, 165, 0), (255, 255, 192)
@@ -84,7 +84,7 @@ def load_image(file1, alpha=False, subdirectory=''):  # eg subdirectory = 'glow'
     fname = os.path.join(data, file1)
     try:
         img = pygame.image.load(fname)
-    except:
+    except BaseException:
         print "Peter says: Can't find " + fname
         exit()
     if alpha:
@@ -97,7 +97,7 @@ def load_image(file1, alpha=False, subdirectory=''):  # eg subdirectory = 'glow'
         try:
             img = pygame.transform.smoothscale(
                 img, (int(g.imgf * w), int(g.imgf * h)))
-        except:
+        except BaseException:
             img = pygame.transform.scale(
                 img, (int(g.imgf * w), int(g.imgf * h)))
     return img
@@ -121,7 +121,8 @@ def shuffle(lst):
     return lt
 
 
-def centre_blit(screen, img, (cx, cy), angle=0):  # rotation is clockwise
+def centre_blit(screen, img, coord, angle=0):  # rotation is clockwise
+    (cx, cy) = coord
     img1 = img
     if angle != 0:
         img1 = pygame.transform.rotate(img, -angle)
@@ -129,7 +130,9 @@ def centre_blit(screen, img, (cx, cy), angle=0):  # rotation is clockwise
     screen.blit(img1, (cx - rect.width / 2, cy - rect.height / 2))
 
 
-def text_blit(screen, s, font, (cx, cy), (r, g, b)):
+def text_blit(screen, s, font, coord1, coord2):
+    (cx, cy) = coord1
+    (r, g, b) = coord2
     text = font.render(s, True, (0, 0, 0))
     rect = text.get_rect()
     rect.centerx = cx + 2
@@ -143,7 +146,9 @@ def text_blit(screen, s, font, (cx, cy), (r, g, b)):
     return rect
 
 
-def text_blit1(screen, s, font, (x, y), (r, g, b)):
+def text_blit1(screen, s, font, coord1, coord2):
+    (x, y) = coord1
+    (r, g, b) = coord2
     text = font.render(s, True, (r, g, b))
     rect = text.get_rect()
     rect.x = x
@@ -154,7 +159,8 @@ def text_blit1(screen, s, font, (x, y), (r, g, b)):
 # m is the message
 # d is the # of pixels in the border around the text
 # (cx, cy)  =  coords centre - (0, 0) means use screen centre
-def message(screen, font, m, (cx, cy)=(0, 0), d=20):
+def message(screen, font, m, coord=(0, 0), d=20):
+    (cx, cy) = coord
     if m != '':
         if pygame.font:
             text = font.render(m, True, (255, 255, 255))
@@ -175,7 +181,8 @@ def message(screen, font, m, (cx, cy)=(0, 0), d=20):
             screen.blit(text, rect)
 
 
-def mouse_on_img(img, (x, y)):  # x, y = top left
+def mouse_on_img(img, coord):  # x, y = top left
+    (x, y) = coord
     w = img.get_width()
     h = img.get_height()
     mx, my = g.pos
@@ -189,19 +196,21 @@ def mouse_on_img(img, (x, y)):  # x, y = top left
         return False
     try:  # in case out of range
         col = img.get_at((int(mx - x), int(my - y)))
-    except:
+    except BaseException:
         return False
     if col[3] < 10:
         return False
     return True
 
 
-def mouse_on_img1(img, (cx, cy)):
+def mouse_on_img1(img, coord):
+    (cx, cy) = coord
     xy = centre_to_top_left(img, (cx, cy))
     return mouse_on_img(img, xy)
 
 
-def mouse_on_img_rect(img, (cx, cy)):
+def mouse_on_img_rect(img, coord):
+    (cx, cy) = coord
     w2 = img.get_width() / 2
     h2 = img.get_height() / 2
     x1 = cx - w2
@@ -243,8 +252,9 @@ def display_score():
                     (x - d + g.sy(.05), y + h / 2 - g.sy(.2)))
 
 
-def display_number(n, (cx, cy), font, colour=BLACK, bgd=None,
+def display_number(n, coord, font, colour=BLACK, bgd=None,
                    outline_font=None):
+    (cx, cy) = coord
     if pygame.font:
         if bgd is None:
             text = font.render(str(n), True, colour)
@@ -256,20 +266,23 @@ def display_number(n, (cx, cy), font, colour=BLACK, bgd=None,
         centre_blit(g.screen, text, (cx, cy))
 
 
-def display_number1(n, (x, cy), font, colour=BLACK):
+def display_number1(n, coord, font, colour=BLACK):
+    (x, cy) = coord
     if pygame.font:
         text = font.render(str(n), True, colour)
         y = cy - text.get_height() / 2
         g.screen.blit(text, (x, y))
 
 
-def top_left_to_centre(img, (x, y)):
+def top_left_to_centre(img, coord):
+    (x, y) = coord
     cx = x + img.get_width() / 2
     cy = y + img.get_height() / 2
     return (cx, cy)
 
 
-def centre_to_top_left(img, (cx, cy)):
+def centre_to_top_left(img, coord):
+    (cx, cy) = coord
     x = cx - img.get_width() / 2
     y = cy - img.get_height() / 2
     return (x, y)

@@ -93,7 +93,7 @@ class Trip:
         for locn in self.locns:
             if locn.state == 0:
                 g.screen.blit(self.back, (locn.x, locn.y))
-            elif  locn.state in (1, 3):
+            elif locn.state in (1, 3):
                 if locn.pic or not g.words:
                     g.screen.blit(self.pics[locn.card], (locn.x, locn.y))
                 else:

@@ -1,4 +1,4 @@
-#load_save.py
+# load_save.py
 import g
 
 loaded = []  # list of strings
@@ -9,7 +9,7 @@ def load(f):
     try:
         for line in f.readlines():
             loaded.append(line)
-    except:
+    except BaseException:
         pass
 
 
