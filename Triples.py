@@ -103,8 +103,6 @@ class Triples:
         if self.canvas is not None:
             self.canvas.grab_focus()
         ctrl = False
-        pygame.key.set_repeat(600, 120)
-        key_ms = pygame.time.get_ticks()
         going = True
         while going:
             if self.journal:
@@ -137,22 +135,20 @@ class Triples:
                         self.flush_queue()
                 elif event.type == pygame.KEYDOWN:
                     # throttle keyboard repeat
-                    if pygame.time.get_ticks() - key_ms > 110:
-                        key_ms = pygame.time.get_ticks()
-                        if ctrl:
-                            if event.key == pygame.K_q:
-                                if not self.journal:
-                                    utils.save()
-                                going = False
-                                break
-                            else:
-                                ctrl = False
-                        if event.key in (pygame.K_LCTRL, pygame.K_RCTRL):
-                            ctrl = True
+                    if ctrl:
+                        if event.key == pygame.K_q:
+                            if not self.journal:
+                                utils.save()
+                            going = False
                             break
-                        self.do_key(event.key)
-                        g.redraw = True
-                        self.flush_queue()
+                        else:
+                            ctrl = False
+                    if event.key in (pygame.K_LCTRL, pygame.K_RCTRL):
+                        ctrl = True
+                        break
+                    self.do_key(event.key)
+                    g.redraw = True
+                    self.flush_queue()
                 elif event.type == pygame.KEYUP:
                     ctrl = False
             if not going:
@@ -165,7 +161,6 @@ class Triples:
                 pygame.display.flip()
                 g.redraw = False
                 if self.trip.delay:
-                    pygame.time.delay(1000)
                     self.trip.delay = False
                     self.trip.gone()
                     g.redraw = True
